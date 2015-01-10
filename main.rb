@@ -6,11 +6,20 @@ get '/' do
 end
 
 get '/about' do
+  @title = "All About This Website"
   erb :about
 end
 
 get '/contact' do
-  erb :contact, :layout => :special
+  @title = "Contact information"
+  erb :contact
 end
+
+not_found do
+  erb :not_found
+end
+
+
+
 
 
