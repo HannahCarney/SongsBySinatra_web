@@ -1,5 +1,5 @@
 <% title="Songs By Sinatra" %>
-<!doctype html>
+<!doctype html
 <html lang="en">
 <head>
 	<title><%= @title || "Songs By Sinatra" %></title>
@@ -8,15 +8,9 @@
 </head>
 <body>
 	<header>
-	<h1><%= "Songs By Sinatra" %></h1>
-	<nav>
-		<ul>
-			<li><a href="/" title="Home">Home</a></li>
-			<li><a href="/about" title="About">About</a></li>
-			<li><a href="/contact" title="Contact">Contact</a></li>
-		</ul>
-	</nav>
-</header>
+		<h1><%= "Songs By Sinatra" %></h1>
+	</header>
+		<%= erb :nav %>
 	<section>
 		<%=yield %>
 	</section>
