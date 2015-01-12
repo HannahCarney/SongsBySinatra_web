@@ -49,6 +49,11 @@ nav {
  @include tabs ($background: $black, $color: $white);
  font-weight: bold;
 }
+
+nav a.current {
+	background: lighten($black, 20%);
+}
+
 p {
  font: 13px/1.4 $main-font;
 }
