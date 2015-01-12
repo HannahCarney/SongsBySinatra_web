@@ -6,10 +6,14 @@ html lang="en"
  	== css :styles
  	body
  		header
-			h1 Songs By Sinatra
+	        h1 Songs By Sinatra
 			== slim :nav
+	    footer
+            - if authorized?
+                a href="/logout" log out
+            - else
+                a href="/login" log in 
+
  	section
  	    == styled_flash
  		== yield
-
-

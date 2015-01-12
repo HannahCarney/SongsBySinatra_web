@@ -6,15 +6,13 @@ require './song'
 require 'sinatra/flash'
 require 'pony'
 require_relative 'secret_email_info.rb'
+require './sinatra/auth'
 
 get('/styles.css'){ scss :styles }
 
-enable :sessions
 
 configure do
   enable :sessions
-  set :username, 'frank'
-  set :password, 'sinatra'
 end
 
 configure :development do
