@@ -1,10 +1,6 @@
 require 'dm-core'
 require 'dm-migrations'
 
-configure :development do
-  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
-  enable :sessions
-end
 
 class Song
   include DataMapper::Resource
