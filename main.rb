@@ -21,6 +21,10 @@ configure :production do
  DataMapper.setup(:default, ENV['DATABASE_URL'])
 end
 
+before do
+  set_title
+end
+
 helpers do
   def css(*stylesheets)
     stylesheets.map do |stylesheet|
@@ -31,6 +35,10 @@ helpers do
 
   def current?(path='/')
     (request.path==path || request.path==path+'/') ? "current" : nil
+  end
+
+  def set_title
+    @title ||= "Songs By Sinatra"
   end
 end
 
