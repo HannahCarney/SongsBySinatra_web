@@ -15,18 +15,6 @@ configure do
   enable :sessions
 end
 
-configure :development do
-  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
-    set :email_address => 'smtp.gmail.com',
-    :email_user_name => 'daz',
-   :email_password => 'secret',
-   :email_domain => 'localhost.localdomain'
-end
-
-configure :production do
-  DataMapper.setup(:default, ENV['DATABASE_URL'])
-end
-
 before do
   set_title
 end
