@@ -4,22 +4,28 @@ require 'slim'
 require 'sass'
 require './song'
 require 'sinatra/flash'
+require 'pony'
 
 get('/styles.css'){ scss :styles }
 
+enable :sessions
+
 configure do
- enable :sessions
- set :username, 'frank'
- set :password, 'sinatra'
+  enable :sessions
+  set :username, 'frank'
+  set :password, 'sinatra'
 end
 
 configure :development do
   DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
-  enable :sessions
+    set :email_address => 'smtp.gmail.com',
+    :email_user_name => 'daz',
+   :email_password => 'secret',
+   :email_domain => 'localhost.localdomain'
 end
 
 configure :production do
- DataMapper.setup(:default, ENV['DATABASE_URL'])
+  DataMapper.setup(:default, ENV['DATABASE_URL'])
 end
 
 before do
@@ -41,6 +47,25 @@ helpers do
   def set_title
     @title ||= "Songs By Sinatra"
   end
+
+  def send_message
+    Pony.mail({
+     :from => params[:name] + "<" + params[:email] + ">",
+     :to => '$email',
+     :subject => params[:name] + " has contacted you",
+     :body => params[:message],
+     :via => :smtp,
+     :via_options => {
+       :address              => 'smtp.gmail.com',
+       :port                 => '587',
+       :enable_starttls_auto => true,
+       :user_name            => '$email',
+       :password             => '$password',
+       :authentication       => :plain,
+       :domain => 'localhost.localdomain'
+      }
+     })
+  end
 end
 
 get '/' do
@@ -55,6 +80,12 @@ end
 get '/contact' do
   @title = "Contact information"
   slim :contact
+end
+
+post '/contact' do
+  send_message
+  flash[:notice] = "Thank you for your message. We'll be in touch soon."
+  redirect to('/')
 end
 
 not_found do

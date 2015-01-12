@@ -63,13 +63,18 @@ post '/songs' do
 end
 
 put '/songs/:id' do
+  protected!
   song = find_song
-  song.update(params[:song])
+  if song.update(params[:song])
+    flash[:notice] = "Song successfully updated"
+  end
   redirect to("/songs/#{song.id}")
 end
 
 delete '/songs/:id' do
-  find_song.destroy
+  if find_song.destroy
+    flash[:notice] = "Songs deleted"
+  end
   redirect to('/songs')
 end
 
