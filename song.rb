@@ -30,7 +30,7 @@ get '/songs/:id' do
 end
 
 post '/songs' do
-  song = Song.create(parmas[:song])
+  song = Song.create(params[:song])
   redirect to("/songs/#{song.id}")
 end
 
@@ -40,9 +40,14 @@ get '/songs/:id/edit' do
 end
 
 put '/songs/:id' do
-  song = Song.get(params[:song])
+  song = Song.get(params[:id])
   song.update(params[:song])
   redirect to("/songs/#{song.id}")
+end
+
+delete '/songs/:id' do
+  Song.get(params[:id]).destroy
+  redirect to ('/songs')
 end
 
 
