@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'slim'
 require 'sass'
+require './song'
 
 get('/styles.css'){ scss :styles }
 
@@ -24,6 +25,15 @@ not_found do
   slim :not_found
 end
 
+get '/songs' do
+  @songs = Song.all
+  slim :songs
+end
+
+get '/songs/:id' do
+  @song = Song.get(params[:id])
+  slim :show_song
+end
 
 
 
