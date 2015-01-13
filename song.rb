@@ -1,3 +1,4 @@
+require 'sinatra/base'
 require 'dm-core'
 require 'dm-migrations'
 
@@ -32,52 +33,57 @@ module SongHelpers
 end
 
 
-helpers SongHelpers
+# helpers SongHelpers
 
 DataMapper.finalize
 
-get '/songs' do
-  find_songs
-  slim :songs
-end
+class Test < Sinatra::Application
 
-get '/songs/new' do
-  protected!
-  @song = Song.new
-  slim :new_song
-end
+  include SongHelpers
 
-get '/songs/:id' do
-  @song = find_song
-  slim :show_song
-end
-
-get '/songs/:id/edit' do
-  @song = find_song
-  slim :edit_song
-end
-
-post '/songs' do
-  flash[:notice] = "Song successfully added" if create_song
-  redirect to("/songs/#{@song.id}")
-end
-
-put '/songs/:id' do
-  protected!
-  song = find_song
-  if song.update(params[:song])
-    flash[:notice] = "Song successfully updated"
+  get '/songs' do
+    find_songs
+    slim :songs
   end
-  redirect to("/songs/#{song.id}")
-end
 
-delete '/songs/:id' do
-  if find_song.destroy
-    flash[:notice] = "Songs deleted"
+  get '/songs/new' do
+    protected!
+    @song = Song.new
+    slim :new_song
   end
-  redirect to('/songs')
-end
 
+  get '/songs/:id' do
+    @song = find_song
+    slim :show_song
+  end
+
+  get '/songs/:id/edit' do
+    @song = find_song
+    slim :edit_song
+  end
+
+  post '/songs' do
+    flash[:notice] = "Song successfully added" if create_song
+    redirect to("/songs/#{@song.id}")
+  end
+
+  put '/songs/:id' do
+    protected!
+    song = find_song
+    if song.update(params[:song])
+      flash[:notice] = "Song successfully updated"
+    end
+    redirect to("/songs/#{song.id}")
+  end
+
+  delete '/songs/:id' do
+    if find_song.destroy
+      flash[:notice] = "Songs deleted"
+    end
+    redirect to('/songs')
+  end
+
+end
 
 
 
