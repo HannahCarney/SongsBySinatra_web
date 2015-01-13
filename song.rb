@@ -35,7 +35,6 @@ end
 
 # helpers SongHelpers
 
-DataMapper.finalize
 
 class Test < Sinatra::Application
 

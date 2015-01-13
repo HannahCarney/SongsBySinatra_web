@@ -8,11 +8,6 @@ require_relative 'secret_email_info.rb'
 require './sinatra/auth'
 
 
-
-
-
-
-
 class Test < Sinatra::Application
   
   helpers do
@@ -21,7 +16,6 @@ class Test < Sinatra::Application
         "<link href=\"/#{stylesheet}.css\" media=\"screen, projection\" rel=\"stylesheet\" />"
       end.join
     end
-
 
     def current?(path='/')
       (request.path==path || request.path==path+'/') ? "current" : nil
@@ -60,16 +54,23 @@ class Test < Sinatra::Application
   end
 
   configure :development do
-    DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
-      set :email_address => 'smtp.gmail.com',
-      :email_user_name => 'daz',
-     :email_password => 'secret',
+    DataMapper.setup(:default, "postgres://localhost/songs_development")
+     set :email_address => $email,
+     :email_user_name => $email,
+     :email_passwod => $password,
      :email_domain => 'localhost.localdomain'
   end
 
   configure :production do
     DataMapper.setup(:default, ENV['DATABASE_URL'])
+    set :email_address => $email,
+    :email_user_name => $email,
+    :email_passwod => $password,
+    :email_domain => 'localhost.localdomain'
   end
+
+  DataMapper.finalize
+  DataMapper.auto_upgrade!
   
   get('/styles.css'){ scss :styles }
 
